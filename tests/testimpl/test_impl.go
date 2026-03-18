@@ -64,6 +64,41 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 		require.NoError(t, err, "schedule %s should exist", scheduleName)
 		assert.Equal(t, name, aws.ToString(schedOut.GroupName), "schedule %s should be in the schedule group", scheduleName)
 	}
+
+	// Write-path: update a schedule state and verify (functional test only)
+	firstSchedule := scheduleNames[0]
+	schedOut, err := schedulerClient.GetSchedule(context.Background(), &scheduler.GetScheduleInput{
+		Name:      aws.String(firstSchedule),
+		GroupName: aws.String(name),
+	})
+	require.NoError(t, err, "schedule %s should exist for write-path test", firstSchedule)
+
+	_, err = schedulerClient.UpdateSchedule(context.Background(), &scheduler.UpdateScheduleInput{
+		GroupName:           aws.String(name),
+		Name:                aws.String(firstSchedule),
+		FlexibleTimeWindow:  schedOut.FlexibleTimeWindow,
+		ScheduleExpression:  schedOut.ScheduleExpression,
+		Target:              schedOut.Target,
+		State:               schedulertypes.ScheduleStateDisabled,
+	})
+	require.NoError(t, err, "UpdateSchedule to DISABLED should succeed")
+
+	schedOut, err = schedulerClient.GetSchedule(context.Background(), &scheduler.GetScheduleInput{
+		Name:      aws.String(firstSchedule),
+		GroupName: aws.String(name),
+	})
+	require.NoError(t, err)
+	assert.Equal(t, schedulertypes.ScheduleStateDisabled, schedOut.State, "schedule state should be DISABLED after update")
+
+	_, err = schedulerClient.UpdateSchedule(context.Background(), &scheduler.UpdateScheduleInput{
+		GroupName:           aws.String(name),
+		Name:                aws.String(firstSchedule),
+		FlexibleTimeWindow:  schedOut.FlexibleTimeWindow,
+		ScheduleExpression:  schedOut.ScheduleExpression,
+		Target:              schedOut.Target,
+		State:               schedulertypes.ScheduleStateEnabled,
+	})
+	require.NoError(t, err, "UpdateSchedule back to ENABLED should succeed")
 }
 
 func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {

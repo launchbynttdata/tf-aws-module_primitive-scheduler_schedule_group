@@ -39,6 +39,11 @@ module "schedule_group" {
   timeouts    = var.timeouts
 }
 
+# Default event bus ARN for schedule targets
+locals {
+  event_bus_arn = "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:event-bus/default"
+}
+
 # IAM role for EventBridge Scheduler to put events
 resource "aws_iam_role" "scheduler" {
   name = module.resource_names["scheduler_role"].standard
@@ -67,15 +72,10 @@ resource "aws_iam_role_policy" "scheduler_events" {
       {
         Effect   = "Allow"
         Action   = "events:PutEvents"
-        Resource = "*"
+        Resource = local.event_bus_arn
       }
     ]
   })
-}
-
-# Default event bus ARN for schedule targets
-locals {
-  event_bus_arn = "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:event-bus/default"
 }
 
 resource "aws_scheduler_schedule" "schedule_1" {
