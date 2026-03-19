@@ -51,6 +51,12 @@ variable "resource_names_map" {
 # Schedule group
 # -----------------------------------------------------------------------------
 
+variable "name" {
+  description = "Name of the schedule group. Conflicts with name_prefix. When null, uses resource naming module output."
+  type        = string
+  default     = null
+}
+
 variable "name_prefix" {
   description = "Creates a unique name beginning with the specified prefix. Conflicts with name. Set to null when using resource naming module for name."
   type        = string

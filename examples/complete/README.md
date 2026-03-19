@@ -28,8 +28,8 @@ module "resource_names" {
 module "schedule_group" {
   source = "../.."
 
-  name        = module.resource_names["schedule_group"].standard
-  name_prefix = var.name_prefix
+  name        = coalesce(var.name, module.resource_names["schedule_group"].standard)
+  name_prefix = var.name != null ? null : var.name_prefix
   tags        = var.tags
   timeouts    = var.timeouts
 }
@@ -104,34 +104,6 @@ resource "aws_scheduler_schedule" "schedule_2" {
 }
 ```
 
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_logical_product_family"></a> [logical_product_family](#input_logical_product_family) | Logical product family for resource naming. | `string` | n/a | yes |
-| <a name="input_logical_product_service"></a> [logical_product_service](#input_logical_product_service) | Logical product service for resource naming. | `string` | n/a | yes |
-| <a name="input_class_env"></a> [class_env](#input_class_env) | Environment class for resource naming (e.g., dev, prod). | `string` | n/a | yes |
-| <a name="input_instance_env"></a> [instance_env](#input_instance_env) | Instance environment number (0-999) for resource naming. | `number` | n/a | yes |
-| <a name="input_instance_resource"></a> [instance_resource](#input_instance_resource) | Instance resource number (0-100) for resource naming. | `number` | n/a | yes |
-| <a name="input_resource_names_map"></a> [resource_names_map](#input_resource_names_map) | Map of key to resource_name configuration for the resource naming module. | `map(object({ name = string, max_length = optional(number, 64) }))` | n/a | yes |
-| <a name="input_name_prefix"></a> [name_prefix](#input_name_prefix) | Creates a unique name beginning with the specified prefix. Conflicts with name. Set to null when using resource naming module for name. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input_tags) | Map of tags to assign to the schedule group. | `map(string)` | `{}` | no |
-| <a name="input_timeouts"></a> [timeouts](#input_timeouts) | Create and delete timeout configurations. | `object({ create = optional(string, "5m"), delete = optional(string, "5m") })` | `null` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_region"></a> [region](#output_region) | The AWS region where resources are created. |
-| <a name="output_id"></a> [id](#output_id) | The ID of the schedule group. |
-| <a name="output_arn"></a> [arn](#output_arn) | The ARN of the schedule group. |
-| <a name="output_name"></a> [name](#output_name) | The name of the schedule group. |
-| <a name="output_state"></a> [state](#output_state) | The state of the schedule group. |
-| <a name="output_creation_date"></a> [creation_date](#output_creation_date) | The time the schedule group was created. |
-| <a name="output_last_modification_date"></a> [last_modification_date](#output_last_modification_date) | The time the schedule group was last modified. |
-| <a name="output_tags_all"></a> [tags_all](#output_tags_all) | Map of all tags assigned to the schedule group. |
-| <a name="output_schedule_names"></a> [schedule_names](#output_schedule_names) | Names of the schedules in the schedule group. |
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -174,6 +146,7 @@ resource "aws_scheduler_schedule" "schedule_2" {
 | <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Instance environment number (0-999) for resource naming. | `number` | n/a | yes |
 | <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Instance resource number (0-100) for resource naming. | `number` | n/a | yes |
 | <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of key to resource\_name configuration for the resource naming module. | <pre>map(object({<br/>    name       = string<br/>    max_length = optional(number, 64)<br/>  }))</pre> | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Name of the schedule group. Conflicts with name\_prefix. When null, uses resource naming module output. | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Creates a unique name beginning with the specified prefix. Conflicts with name. Set to null when using resource naming module for name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to the schedule group. | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Create and delete timeout configurations. | <pre>object({<br/>    create = optional(string, "5m")<br/>    delete = optional(string, "5m")<br/>  })</pre> | `null` | no |

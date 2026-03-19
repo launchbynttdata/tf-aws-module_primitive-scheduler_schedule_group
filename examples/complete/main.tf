@@ -33,8 +33,8 @@ module "resource_names" {
 module "schedule_group" {
   source = "../.."
 
-  name        = module.resource_names["schedule_group"].standard
-  name_prefix = var.name_prefix
+  name        = coalesce(var.name, module.resource_names["schedule_group"].standard)
+  name_prefix = var.name != null ? null : var.name_prefix
   tags        = var.tags
   timeouts    = var.timeouts
 }
