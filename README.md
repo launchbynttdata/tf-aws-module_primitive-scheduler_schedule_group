@@ -7,21 +7,9 @@
 
 This Terraform module creates an [AWS EventBridge Scheduler Schedule Group](https://docs.aws.amazon.com/scheduler/latest/UserGuide/managing-schedule-groups.html). Schedule groups organize schedules for easier management and isolation.
 
-## Pre-Commit Hooks
-
-[.pre-commit-config.yaml](.pre-commit-config.yaml) defines pre-commit hooks for Terraform, Go, and common linting. The `commitlint` hook enforces conventional commit messages. The `detect-secrets-hook` prevents new secrets from being introduced. See [pre-commit documentation](https://pre-commit.com/) for installation. For `commitlint`, run:
-
-```
-pre-commit install --hook-type commit-msg
-```
-
 ## Usage
 
 See the [complete example](examples/complete/) for a full working configuration using the resource naming module.
-
-## Testing
-
-Run `make configure` to set up the repository, then `make check` to run lint, validate, plan, and Terratest. Ensure AWS credentials are configured (e.g., `AWS_PROFILE` or `AWS_ACCESS_KEY_ID`).
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
