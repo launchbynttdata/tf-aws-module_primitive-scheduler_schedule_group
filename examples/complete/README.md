@@ -112,12 +112,6 @@ resource "aws_scheduler_schedule" "schedule_2" {
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.14 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-
 ## Modules
 
 | Name | Source | Version |
@@ -140,14 +134,14 @@ resource "aws_scheduler_schedule" "schedule_2" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | Logical product family for resource naming. | `string` | n/a | yes |
-| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | Logical product service for resource naming. | `string` | n/a | yes |
 | <a name="input_class_env"></a> [class\_env](#input\_class\_env) | Environment class for resource naming (e.g., dev, prod). | `string` | n/a | yes |
 | <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Instance environment number (0-999) for resource naming. | `number` | n/a | yes |
 | <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Instance resource number (0-100) for resource naming. | `number` | n/a | yes |
-| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of key to resource\_name configuration for the resource naming module. | <pre>map(object({<br/>    name       = string<br/>    max_length = optional(number, 64)<br/>  }))</pre> | n/a | yes |
+| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | Logical product family for resource naming. | `string` | n/a | yes |
+| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | Logical product service for resource naming. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the schedule group. Conflicts with name\_prefix. When null, uses resource naming module output. | `string` | `null` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Creates a unique name beginning with the specified prefix. Conflicts with name. Set to null when using resource naming module for name. | `string` | `null` | no |
+| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | Map of key to resource\_name configuration for the resource naming module. | <pre>map(object({<br/>    name       = string<br/>    max_length = optional(number, 64)<br/>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to the schedule group. | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Create and delete timeout configurations. | <pre>object({<br/>    create = optional(string, "5m")<br/>    delete = optional(string, "5m")<br/>  })</pre> | `null` | no |
 
@@ -155,13 +149,13 @@ resource "aws_scheduler_schedule" "schedule_2" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_region"></a> [region](#output\_region) | The AWS region where resources are created. |
-| <a name="output_id"></a> [id](#output\_id) | The ID of the schedule group. |
 | <a name="output_arn"></a> [arn](#output\_arn) | The ARN of the schedule group. |
-| <a name="output_name"></a> [name](#output\_name) | The name of the schedule group. |
-| <a name="output_state"></a> [state](#output\_state) | The state of the schedule group. |
 | <a name="output_creation_date"></a> [creation\_date](#output\_creation\_date) | The time the schedule group was created. |
+| <a name="output_id"></a> [id](#output\_id) | The ID of the schedule group. |
 | <a name="output_last_modification_date"></a> [last\_modification\_date](#output\_last\_modification\_date) | The time the schedule group was last modified. |
-| <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of all tags assigned to the schedule group. |
+| <a name="output_name"></a> [name](#output\_name) | The name of the schedule group. |
+| <a name="output_region"></a> [region](#output\_region) | The AWS region where resources are created. |
 | <a name="output_schedule_names"></a> [schedule\_names](#output\_schedule\_names) | Names of the schedules in the schedule group. |
+| <a name="output_state"></a> [state](#output\_state) | The state of the schedule group. |
+| <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of all tags assigned to the schedule group. |
 <!-- END_TF_DOCS -->
