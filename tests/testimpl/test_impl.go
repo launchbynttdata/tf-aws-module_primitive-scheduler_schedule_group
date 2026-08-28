@@ -18,15 +18,15 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	opts := ctx.TerratestTerraformOptions()
 
 	// Get region from Terraform output (matches where resources were created)
-	region := terraform.Output(t, opts, "region")
+	region := terraform.OutputContext(t, context.Background(), opts, "region")
 	require.NotEmpty(t, region, "region output should be set")
 
 	// Verify Terraform outputs
-	id := terraform.Output(t, opts, "id")
-	name := terraform.Output(t, opts, "name")
-	arn := terraform.Output(t, opts, "arn")
-	state := terraform.Output(t, opts, "state")
-	scheduleNames := terraform.OutputList(t, opts, "schedule_names")
+	id := terraform.OutputContext(t, context.Background(), opts, "id")
+	name := terraform.OutputContext(t, context.Background(), opts, "name")
+	arn := terraform.OutputContext(t, context.Background(), opts, "arn")
+	state := terraform.OutputContext(t, context.Background(), opts, "state")
+	scheduleNames := terraform.OutputListContext(t, context.Background(), opts, "schedule_names")
 
 	require.NotEmpty(t, id, "id output should be set")
 	require.NotEmpty(t, name, "name output should be set")
@@ -74,12 +74,12 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	require.NoError(t, err, "schedule %s should exist for write-path test", firstSchedule)
 
 	_, err = schedulerClient.UpdateSchedule(context.Background(), &scheduler.UpdateScheduleInput{
-		GroupName:           aws.String(name),
-		Name:                aws.String(firstSchedule),
-		FlexibleTimeWindow:  schedOut.FlexibleTimeWindow,
-		ScheduleExpression:  schedOut.ScheduleExpression,
-		Target:              schedOut.Target,
-		State:               schedulertypes.ScheduleStateDisabled,
+		GroupName:          aws.String(name),
+		Name:               aws.String(firstSchedule),
+		FlexibleTimeWindow: schedOut.FlexibleTimeWindow,
+		ScheduleExpression: schedOut.ScheduleExpression,
+		Target:             schedOut.Target,
+		State:              schedulertypes.ScheduleStateDisabled,
 	})
 	require.NoError(t, err, "UpdateSchedule to DISABLED should succeed")
 
@@ -91,12 +91,12 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	assert.Equal(t, schedulertypes.ScheduleStateDisabled, schedOut.State, "schedule state should be DISABLED after update")
 
 	_, err = schedulerClient.UpdateSchedule(context.Background(), &scheduler.UpdateScheduleInput{
-		GroupName:           aws.String(name),
-		Name:                aws.String(firstSchedule),
-		FlexibleTimeWindow:  schedOut.FlexibleTimeWindow,
-		ScheduleExpression:  schedOut.ScheduleExpression,
-		Target:              schedOut.Target,
-		State:               schedulertypes.ScheduleStateEnabled,
+		GroupName:          aws.String(name),
+		Name:               aws.String(firstSchedule),
+		FlexibleTimeWindow: schedOut.FlexibleTimeWindow,
+		ScheduleExpression: schedOut.ScheduleExpression,
+		Target:             schedOut.Target,
+		State:              schedulertypes.ScheduleStateEnabled,
 	})
 	require.NoError(t, err, "UpdateSchedule back to ENABLED should succeed")
 }
@@ -105,15 +105,15 @@ func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 	opts := ctx.TerratestTerraformOptions()
 
 	// Get region from Terraform output (matches where resources were created)
-	region := terraform.Output(t, opts, "region")
+	region := terraform.OutputContext(t, context.Background(), opts, "region")
 	require.NotEmpty(t, region, "region output should be set")
 
 	// Verify Terraform outputs (read-only)
-	id := terraform.Output(t, opts, "id")
-	name := terraform.Output(t, opts, "name")
-	arn := terraform.Output(t, opts, "arn")
-	state := terraform.Output(t, opts, "state")
-	scheduleNames := terraform.OutputList(t, opts, "schedule_names")
+	id := terraform.OutputContext(t, context.Background(), opts, "id")
+	name := terraform.OutputContext(t, context.Background(), opts, "name")
+	arn := terraform.OutputContext(t, context.Background(), opts, "arn")
+	state := terraform.OutputContext(t, context.Background(), opts, "state")
+	scheduleNames := terraform.OutputListContext(t, context.Background(), opts, "schedule_names")
 
 	require.NotEmpty(t, id, "id output should be set")
 	require.NotEmpty(t, name, "name output should be set")
